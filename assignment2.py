@@ -7,7 +7,7 @@ def main():
     printPrettyMatrix()
     print(getOptimalScore())
     getOptimalAlignments()
-    print(optimal_sequence_2 + "\n" +  optimal_sequence_1)
+    print(optimal_sequence_1 + "\n" +  optimal_sequence_2)
     print(multipleAlignments)
     return 0
 
@@ -15,8 +15,8 @@ def getSequences(inputFile):
     global sequence_1
     global sequence_2
     input = open(inputFile, "r")
-    sequence_2 = input.readline()
     sequence_1 = input.readline()
+    sequence_2 = input.readline()
     input.close()
 
 def initializeMatrix():
@@ -28,12 +28,12 @@ def initializeMatrix():
     
     accumulator = gap #Used for initializing first row and column
 
-    for i in range(1, len(sequence_1)): #Initializes 1st row
+    for i in range(1, len(sequence_2)): #Initializes 1st row
         grid[0][i] = accumulator
         accumulator += gap
     
     accumulator = gap
-    for i in range(1, len(sequence_2)): #Initializes 1st column
+    for i in range(1, len(sequence_1)): #Initializes 1st column
         grid[i][0] = accumulator
         accumulator += gap
 
