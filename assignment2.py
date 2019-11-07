@@ -2,21 +2,42 @@ import sys
 
 def main():
     getSequences(sys.argv[1])
-    print(sequence_1 + sequence_2)
+    print(sequence_2 + sequence_1)
     initializeMatrix()
     printPrettyMatrix()
     print(getOptimalScore())
     getOptimalAlignments()
-    print(optimal_sequence_1 + "\n" +  optimal_sequence_2)
+    print(optimal_sequence_2 + "\n" +  optimal_sequence_1)
     print(multipleAlignments)
+    writeFiles()
     return 0
+
+def writeFiles():
+    scoreFile = open("2.o1","w")
+    matrixFile = open("2.o2", "w")
+    optimalFile = open("2.o3", "w")
+    isThereMoreFile = open("2.o4", "w")
+   
+    scoreFile.write(str(getOptimalScore()) + "\n")
+
+    writePrettyMatrix(matrixFile)
+
+    optimalFile.write(optimal_sequence_2 + "\n")
+    optimalFile.write(optimal_sequence_1 + "\n")
+
+    isThereMoreFile.write(multipleAlignments + "\n")
+
+    scoreFile.close()
+    matrixFile.close()
+    optimalFile.close()
+    isThereMoreFile.close()
 
 def getSequences(inputFile): #Gets sequences from input file
     global sequence_1
     global sequence_2
     input = open(inputFile, "r")
-    sequence_1 = input.readline()
     sequence_2 = input.readline()
+    sequence_1 = input.readline()
     input.close()
 
 def initializeMatrix(): # Initializes and fills in matrix
@@ -28,12 +49,12 @@ def initializeMatrix(): # Initializes and fills in matrix
     
     accumulator = gap # Used for initializing first row and column
 
-    for i in range(1, len(sequence_2)): # Initializes 1st row
+    for i in range(1, len(sequence_1)): # Initializes 1st row
         grid[0][i] = accumulator
         accumulator += gap
     
     accumulator = gap
-    for i in range(1, len(sequence_1)): # Initializes 1st column
+    for i in range(1, len(sequence_2)): # Initializes 1st column
         grid[i][0] = accumulator
         accumulator += gap
 
@@ -65,7 +86,7 @@ def getOptimalAlignments(): # Back tracing to find ONE optimal alignment
     while row >= 1 and col >= 1:
         m = getMax(row, col) # Max out of adjacent values
 
-        if ( multipleAlignments == "NO" and # Checks if two max values exist and can be used to find multiple optimal alignments
+        if ( #multipleAlignments == "NO" and # Checks if two max values exist and can be used to find multiple optimal alignments
             ( (getMax(row,col) == grid[row][col-1]+gap) and (getMax(row,col) == grid[row-1][col]+gap) ) or
             ( (getMax(row,col) == grid[row][col-1]+gap) and (getMax(row,col) == grid[row-1][col-1]+gap) ) or
             ( (getMax(row,col) == grid[row-1][col]+gap) and (getMax(row,col) == grid[row-1][col]+gap) )
@@ -97,6 +118,12 @@ def printPrettyMatrix(): # Prints matrix in a pretty fashion
         for y in range(0, len(sequence_1)):
             print ("%d\t" %(grid[x][y])),
         print ("")
+
+def writePrettyMatrix(f): # Writes matrix in a pretty fashion to file
+    for x in range(0, len(sequence_2)):
+        for y in range(0, len(sequence_1)):
+            f.write("%d\t" %(grid[x][y])),
+        f.write("\n")
     
 
 main()
