@@ -1,14 +1,12 @@
 import sys
+import time
+import os
+import psutil
 
 def main():
     getSequences(sys.argv[1])
-    print(sequence_2 + sequence_1)
     initializeMatrix()
-    printPrettyMatrix()
-    print(getOptimalScore())
     getOptimalAlignments()
-    print(optimal_sequence_2 + "\n" +  optimal_sequence_1)
-    print(multipleAlignments)
     writeFiles()
     return 0
 
@@ -125,6 +123,8 @@ def writePrettyMatrix(f): # Writes matrix in a pretty fashion to file
             f.write("%d\t" %(grid[x][y])),
         f.write("\n")
     
-
+start_time = time.time()
 main()
-
+print("--- %.3f seconds ---" % (time.time() - start_time))
+process = psutil.Process(os.getpid())
+print("--- %.3f GB ---" %(process.memory_info().rss/10e9))
